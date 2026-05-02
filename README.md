@@ -79,26 +79,13 @@ npm run dev
 
 ## Railway deploy (simple way)
 
-You can deploy backend and frontend as 2 services in Railway.
+**Easiest:** open `RAILWAY-DEPLOY-SIMPLE.md` in this folder — step-by-step like for beginners.
 
-### Backend service
+Short version:
 
-1. New Project -> Deploy from GitHub repo
-2. Root Directory set to `backend`
-3. Add env vars:
-   - `MONGO_URL`
-   - `JWT_SECRET`
-   - `PORT` (optional)
-4. Start command: `npm start`
-
-### Frontend service
-
-1. Add one more service from same repo
-2. Root Directory set to `frontend`
-3. Add env var:
-   - `VITE_API_URL` = backend public URL from Railway
-4. Build command: `npm run build`
-5. Start command: `npm run preview -- --host 0.0.0.0 --port $PORT`
+1. Deploy **backend** with Root Directory = `backend`. Set `MONGO_URL` (or use Railway Mongo and reference its URL), and `JWT_SECRET`. Start: `npm start`.
+2. Deploy **frontend** with Root Directory = `frontend`. Set `VITE_API_URL` to your **backend public URL** (no trailing `/`). Build: `npm install && npm run build`. Start: `npm start`.
+3. If you change `VITE_API_URL`, **redeploy frontend** so it rebuilds (Vite bakes this at build time).
 
 ## Live Link
 

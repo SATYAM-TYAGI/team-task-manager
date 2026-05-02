@@ -23,15 +23,28 @@ app.use("/tasks", taskRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+// railway need this 0.0.0.0 so outside world can reach the server
+const HOST = "0.0.0.0";
+
+// railway mongo plugin sometimes use MONGO_URL or MONGODB_URI, we support both
+const mongoConn =
+  process.env.MONGO_URL || process.env.MONGODB_URI || process.env.DATABASE_URL;
+
+if (!mongoConn) {
+  console.log("ERROR: set MONGO_URL in env (or MONGODB_URI from railway mongo)");
+  process.exit(1);
+}
+
 // here we are connecting db and then start server
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(mongoConn)
   .then(() => {
     console.log("mongo connected");
-    app.listen(PORT, () => {
-      console.log("server running on port " + PORT);
+    app.listen(PORT, HOST, () => {
+      console.log("server running on " + HOST + ":" + PORT);
     });
   })
   .catch((err) => {
     console.log("db error", err.message);
+    process.exit(1);
   });
